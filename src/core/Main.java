@@ -11,6 +11,8 @@ public final class Main {
         frame.setTitle("Jeu");
 
         Game game = new Game();
+        game.initialize();
+
         GamePanel gamePanel = new GamePanel(game);
         GameLoop gameLoop = new GameLoop(gamePanel,game);
 
@@ -20,7 +22,6 @@ public final class Main {
         frame.setVisible(true);
         gamePanel.requestFocusInWindow();
 
-        game.initialize();
         gameLoop.startGameThread();
     }
 }
