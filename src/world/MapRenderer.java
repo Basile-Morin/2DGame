@@ -1,10 +1,11 @@
 package world;
 
+import UI.Renderer;
 import core.GameConfig;
 
 import java.awt.*;
 
-public class MapRenderer {
+public class MapRenderer implements Renderer {
     private final Camera camera;
     private TileMap map;
     private final TileSet tileset;
@@ -13,6 +14,11 @@ public class MapRenderer {
         this.camera=camera;
         this.tileset= new TileSet();
         this.map = map;
+    }
+
+    @Override
+    public void draw(Graphics2D g){
+        drawMap(g);
     }
 
 

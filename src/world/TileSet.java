@@ -15,12 +15,12 @@ public class TileSet {
             tile = new Tile[2];
 
             tile[0] = new Tile();
-            tile[0].image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/Image/tiles/grass.png")));
-            tile[0].collision=false;
+            tile[0].image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/UI/Image/tiles/grass.png")));
+            Objects.requireNonNull(tile)[0].collision=false;
 
             tile[1] = new Tile();
-            tile[1].image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/Image/tiles/water.png")));
-            tile[1].collision=true;
+            tile[1].image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/UI/Image/tiles/water.png")));
+            Objects.requireNonNull(tile)[1].collision=true;
 
 
 
