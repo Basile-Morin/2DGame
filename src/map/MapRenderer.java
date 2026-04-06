@@ -1,6 +1,7 @@
-package world;
+package map;
 
-import UI.Renderer;
+import movement.Camera;
+import core.Renderer;
 import core.GameConfig;
 
 import java.awt.*;
@@ -10,10 +11,10 @@ public class MapRenderer implements Renderer {
     private TileMap map;
     private final TileSet tileset;
 
-    public MapRenderer(TileMap map,Camera camera){
+    public MapRenderer(TileMap map, Camera camera, TileSet tileset){
         this.camera=camera;
-        this.tileset= new TileSet();
         this.map = map;
+        this.tileset = tileset;
     }
 
     @Override

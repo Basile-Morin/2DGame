@@ -1,4 +1,4 @@
-package world;
+package map;
 
 import javax.imageio.ImageIO;
 import java.util.Objects;

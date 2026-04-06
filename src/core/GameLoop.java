@@ -1,9 +1,9 @@
 package core;
 
 public class GameLoop implements Runnable{
-    Thread gameThread;
-    GamePanel panel;
-    Game game;
+    private Thread gameThread;
+    private final GamePanel panel;
+    private final Game game;
 
 
     public GameLoop(GamePanel panel, Game game){

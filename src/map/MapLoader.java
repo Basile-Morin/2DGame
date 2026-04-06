@@ -1,18 +1,17 @@
-package world;
+package map;
 import core.GameConfig;
 
-import java.awt.*;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
 public final class MapLoader {
 
-    public TileMap initializeMap(){
+    public static TileMap initializeMap(){
         int[][] tempMap=new int[GameConfig.worldColNumber][GameConfig.worldLineNumber];
         TileMap map = new TileMap(GameConfig.worldColNumber,GameConfig.worldLineNumber);
         try {
-            InputStream is =getClass().getResourceAsStream("/world/map.txt");
+            InputStream is =map.getClass().getResourceAsStream("/map/map.txt");
             if (is == null) throw new IllegalStateException("Map not found: /world/map.txt");
             BufferedReader br=new BufferedReader(new InputStreamReader(is));
             for (int y = 0; y< GameConfig.worldLineNumber; y++){

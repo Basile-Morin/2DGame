@@ -1,26 +1,35 @@
 package entity;
 
-import Asset.Animation;
 
-public class Entity {
+import java.awt.*;
 
-    protected int x,y;
+public abstract class Entity {
+    protected Point wantedMovements;
+    protected final Point coordinates;
 
-
-
+    protected Entity() {
+        coordinates = new Point(0,0);
+    }
 
 
     public void move(int dx, int dy){
-        x+=dx;
-        y+=dy;
+        coordinates.x+=dx;
+        coordinates.y+=dy;
     }
 
     public int getX() {
-        return x;
+        return coordinates.x;
     }
 
     public int getY() {
-        return y;
+        return coordinates.y;
     }
 
+    public Point getCoordinates() {
+        return coordinates;
+    }
+
+    public Point getWantedMovements() {return wantedMovements;}
+
+    public void setWantedMovements(Point wantedMovements) {this.wantedMovements = wantedMovements;}
 }

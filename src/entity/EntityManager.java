@@ -22,4 +22,9 @@ public class EntityManager {
     public List<Entity> getEntities() {
         return entities;
     }
+
+    public Player getPlayer() {
+        if (entities.isEmpty()) return null;
+        return (Player) entities.getFirst();
+    }
 }

@@ -1,4 +1,4 @@
-package world;
+package map;
 
 public final class TileMap {
     private int cols;

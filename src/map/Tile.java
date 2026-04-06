@@ -1,4 +1,4 @@
-package world;
+package map;
 
 import java.awt.image.BufferedImage;
 

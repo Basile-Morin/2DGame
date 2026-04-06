@@ -13,4 +13,5 @@ public class GameConfig {
     public static final double drawInterval = (double) 1000 /FPS; //time in milliseconds
     public static final int worldColNumber=32;
     public static final int worldLineNumber =24;
+    public static final int ENTITYBASESPEED = 4;
 }

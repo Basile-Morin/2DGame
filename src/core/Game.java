@@ -1,46 +1,54 @@
 package core;
 
-import UI.Renderer;
+
+import movement.input.InputState;
+import movement.Camera;
+import movement.MovementSystem;
+import entity.EntityManager;
 import entity.Player;
-import world.Camera;
-import world.MapLoader;
-import world.MapRenderer;
-import world.TileMap;
+import map.MapLoader;
+import map.MapRenderer;
+import map.TileMap;
+import map.TileSet;
 
 import java.awt.*;
 import java.util.ArrayList;
 
 public class Game {
     private final ArrayList<Renderer> renderers;
-    private final ArrayList<System> systems;
-    private Camera camera;
+    private final InputState inputState;
+    private final ArrayList<ISystem> systems;
 
-    public Game(){
+    public Game(InputState inputState){
+        this.inputState = inputState;
         renderers = new ArrayList<>();
         systems = new ArrayList<>();
     }
 
     public void update(){
+        for (ISystem system : systems) system.update();
 
     }
 
-    public void render(Graphics2D g2){
-        for (Renderer renderer : renderers) renderer.draw(g2);
-    }
+    public void render(Graphics2D g2){ for (Renderer renderer : renderers) renderer.draw(g2);}
 
     public void initialize() {
-        camera = new Camera();
-
-        //Chargement de la carte et de son renderer
-        MapLoader mapLoader = new MapLoader();
-        TileMap map = mapLoader.initializeMap();
-        MapRenderer mapRenderer = new MapRenderer(map,camera);
-        renderers.add(mapRenderer);
-
         //Création du joueur
         Player player = new Player();
+        EntityManager entityManager = new EntityManager();
+        entityManager.addEntity(player); //ENTITIES[0] EST LE JOUEUR
+        Camera camera = new Camera(player);
+
+        //Chargement de la carte et de son renderer
+        TileMap map = MapLoader.initializeMap();
+        TileSet tileSet = new TileSet();
+        MapRenderer mapRenderer = new MapRenderer(map,camera,tileSet);
+        renderers.add(mapRenderer);
+
+        //Système de mouvement
+        MovementSystem movementSystem = new MovementSystem(entityManager,inputState);
+        systems.add(movementSystem);
 
 
     }
-
 }
