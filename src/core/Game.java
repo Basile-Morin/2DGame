@@ -1,7 +1,7 @@
 package core;
 
 
-import movement.input.InputState;
+import core.input.InputState;
 import movement.Camera;
 import movement.MovementSystem;
 import entity.EntityManager;
@@ -12,25 +12,23 @@ import map.TileMap;
 import map.TileSet;
 
 import java.awt.*;
-import java.util.ArrayList;
 
 public class Game {
-    private final ArrayList<Renderer> renderers;
+    private final RendererManager rendererManager;
+    private final SystemManager systemManager;
     private final InputState inputState;
-    private final ArrayList<ISystem> systems;
 
     public Game(InputState inputState){
         this.inputState = inputState;
-        renderers = new ArrayList<>();
-        systems = new ArrayList<>();
+        rendererManager = new RendererManager();
+        systemManager = new SystemManager();
     }
 
     public void update(){
-        for (ISystem system : systems) system.update();
-
+        systemManager.update();
     }
 
-    public void render(Graphics2D g2){ for (Renderer renderer : renderers) renderer.draw(g2);}
+    public void render(Graphics2D g2){rendererManager.render(g2);}
 
     public void initialize() {
         //Création du joueur
@@ -43,11 +41,11 @@ public class Game {
         TileMap map = MapLoader.initializeMap();
         TileSet tileSet = new TileSet();
         MapRenderer mapRenderer = new MapRenderer(map,camera,tileSet);
-        renderers.add(mapRenderer);
+        rendererManager.addRenderer(mapRenderer);
 
         //Système de mouvement
         MovementSystem movementSystem = new MovementSystem(entityManager,inputState);
-        systems.add(movementSystem);
+        systemManager.addSystem(movementSystem);
 
 
     }

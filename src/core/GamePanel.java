@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public final class GamePanel extends JPanel {
-Game game;
+private final Game game;
     public GamePanel(Game game){
         this.setPreferredSize(new Dimension(GameConfig.screenWidth, GameConfig.screenHeight));
         this.setBackground(Color.BLACK);

@@ -1,4 +1,4 @@
-package movement.input;
+package core.input;
 
 public class InputState {
     private boolean[] inputs;

@@ -1,0 +1,91 @@
+@startuml
+
+class core.Game {
+- ArrayList<Renderer> renderers
+- InputState inputState
+- ArrayList<ISystem> systems
++ void update()
++ void render(Graphics2D)
++ void initialize()
+}
+
+class core.RendererManager{
+- ArrayList<Renderer> renderers
++ ArrayList<Renderer> getRenderers()
++ void addRenderer(Renderer renderer)
++ void removeRenderer(Renderer renderer)
++ void render(Graphics2D g2)
+}
+
+class core.SystemManager{
+- ArrayList<ISystem> systems
++ ArrayList<ISystem> getSystems()
++ void addSystem(ISystem system)
++ void removeSystem(ISystem system)
++ void update()
+}
+
+class core.GameConfig  <<constantes>> {
++ {static} int originalTileSize
++ {static} int scale
++ {static} int tileSize
++ {static} int maxScreenCol
++ {static} int maxScreenLine
++ {static} int screenWidth
++ {static} int screenHeight
++ {static} int FPS
++ {static} double drawInterval
++ {static} int worldColNumber
++ {static} int worldLineNumber
++ {static} int ENTITYBASESPEED
+}
+
+class core.GamePanel {
+- Game game
++ void paintComponent(Graphics)
+}
+
+
+class core.Main {
++ {static} void main(String[])
+}
+
+class core.GameLoop {
+- Thread gameThread
+- GamePanel panel
+- Game game
++ void startGameThread()
++ void run()
+}
+
+class core.input.InputListener {
+- InputState inputState
++ void keyTyped(KeyEvent)
++ void keyPressed(KeyEvent)
++ void keyReleased(KeyEvent)
++ InputState getInputState()
+}
+
+class core.input.InputState <<data>> {
+- boolean[] inputs
++ boolean[] getInputs()
++ void setInput(boolean,int)
+}
+
+Game <-- Main : Créer
+GamePanel <-- Main : Créer
+GameLoop <-- Main : Créer et lance
+Game <-- GameLoop : Update
+GamePanel <-- GameLoop : Repaint
+Game <-- GamePanel : Appelle render()
+core.RendererManager <-- Game : créer et appelle render()
+core.SystemManager <-- Game : créer et appelle update()
+core.input.InputListener <-- Main : Initialise
+core.input.InputState <-- core.input.InputListener : Met à jour
+InputState <-- Game : Lit les coordonnées
+
+
+
+
+
+@enduml

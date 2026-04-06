@@ -1,6 +1,6 @@
 package core;
 
-import movement.input.InputListener;
+import core.input.InputListener;
 
 import javax.swing.*;
 

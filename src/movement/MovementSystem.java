@@ -2,7 +2,7 @@ package movement;
 
 import core.GameConfig;
 import core.ISystem;
-import movement.input.InputState;
+import core.input.InputState;
 import entity.EntityManager;
 
 import java.awt.*;
