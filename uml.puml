@@ -1,0 +1,96 @@
+@startuml
+interface ISystem {
+~ void update()
+}
+
+class map.MapLoader {
++ {static} TileMap initializeMap()
+}
+
+
+
+
+
+class entity.EntityManager {
+- List<Entity> entities
++ void addEntity(Entity)
++ void removeEntity(Entity)
++ List<Entity> getEntities()
++ Player getPlayer()
+}
+
+
+abstract class entity.Entity {
+# Point wantedMovements
+# Point coordinates
++ void move(int,int)
++ int getX()
++ int getY()
++ Point getCoordinates()
++ Point getWantedMovements()
++ void setWantedMovements(Point)
+}
+
+
+class map.Tile {
++ BufferedImage image
++ boolean collision
+}
+
+class map.TileSet {
+- Tile[] tile
++ void initializeTileSprite()
++ Tile getTile(int)
+}
+
+
+class map.MapRenderer {
+- Camera camera
+- TileMap map
+- TileSet tileset
++ void draw(Graphics2D)
++ void drawMap(Graphics2D)
+}
+
+
+
+
+class movement.Camera {
+- Point coordinates
++ int getX()
++ int getY()
+}
+
+
+class entity.Player {
+}
+
+
+interface Renderer {
+~ void draw(Graphics2D)
+}
+
+class map.TileMap {
+- int cols
+- int rows
+- int[][] grid
++ int[][] getMap()
++ int getCols()
++ int getRows()
++ void setMap(int[][])
+}
+
+class movement.MovementSystem {
+- EntityManager entityManager
+- InputState inputState
++ void update()
++ Point findWantedMovements(InputState)
+}
+
+
+
+
+Renderer <|.. map.MapRenderer
+entity.Entity <|-- entity.Player
+ISystem <|.. movement.MovementSystem
+@enduml
