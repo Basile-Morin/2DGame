@@ -1,9 +1,9 @@
 @startuml
 
 class core.Game {
-- ArrayList<Renderer> renderers
 - InputState inputState
-- ArrayList<ISystem> systems
+- RendererManager rendererManager
+- SystemManager systemManager
 + void update()
 + void render(Graphics2D)
 + void initialize()

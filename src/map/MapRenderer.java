@@ -8,7 +8,7 @@ import java.awt.*;
 
 public class MapRenderer implements Renderer {
     private final Camera camera;
-    private TileMap map;
+    private final TileMap map;
     private final TileSet tileset;
 
     public MapRenderer(TileMap map, Camera camera, TileSet tileset){
@@ -26,15 +26,15 @@ public class MapRenderer implements Renderer {
     public void drawMap(Graphics2D g){
         int playerX = camera.getX();
         int playerY = camera.getY();
-        int playerScreenX= (GameConfig.screenWidth - GameConfig.tileSize) / 2;
-        int playerScreenY= (GameConfig.screenHeight - GameConfig.tileSize) / 2;
-        for(int y = 0; y< GameConfig.worldLineNumber; y++){
-            for(int x=0;x<GameConfig.worldColNumber;x++){
+        int playerScreenX= (GameConfig.SCREENWIDTH - GameConfig.TILESIZE) / 2;
+        int playerScreenY= (GameConfig.SCREENHEIGHT - GameConfig.TILESIZE) / 2;
+        for(int y = 0; y< GameConfig.WORLDLINENUMBER; y++){
+            for(int x = 0; x<GameConfig.WORLDCOLNUMBER; x++){
                 int tileNum =map.getMap()[x][y];
-                int tileScreenX= (x * GameConfig.tileSize) - playerX +playerScreenX; //CaseX - JoueurX + JoueurX sur l'ecran
-                int tileScreenY= (y * GameConfig.tileSize) - playerY +playerScreenY;   //CaseY - JoueurY + JoueurY sur l'ecran
-                if (tileScreenX<-GameConfig.tileSize || tileScreenY<-GameConfig.tileSize || tileScreenX>GameConfig.worldColNumber* GameConfig.tileSize || tileScreenY>GameConfig.worldLineNumber*GameConfig.tileSize) continue;
-                g.drawImage(tileset.getTile(tileNum).image, tileScreenX, tileScreenY, GameConfig.tileSize, GameConfig.tileSize, null);
+                int tileScreenX= (x * GameConfig.TILESIZE) - playerX +playerScreenX; //CaseX - JoueurX + JoueurX sur l'ecran
+                int tileScreenY= (y * GameConfig.TILESIZE) - playerY +playerScreenY;   //CaseY - JoueurY + JoueurY sur l'ecran
+                if (tileScreenX<-GameConfig.TILESIZE || tileScreenY<-GameConfig.TILESIZE || tileScreenX>GameConfig.WORLDCOLNUMBER * GameConfig.TILESIZE || tileScreenY>GameConfig.WORLDLINENUMBER *GameConfig.TILESIZE) continue;
+                g.drawImage(tileset.getTile(tileNum).image, tileScreenX, tileScreenY, GameConfig.TILESIZE, GameConfig.TILESIZE, null);
 
             } // for y
         }//for x

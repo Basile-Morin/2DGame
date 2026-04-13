@@ -13,13 +13,13 @@ public class SystemManager {
         systems.add(system);
     }
 
-    public void removeSystem(ISystem system){
-        systems.remove(system);
-    }
-
-    public ArrayList<ISystem> getSystems(){
-        return systems;
-    }
+//    public void removeSystem(ISystem system){
+//        systems.remove(system);
+//    }
+//
+//    public ArrayList<ISystem> getSystems(){
+//        return systems;
+//    }
 
     public void update(){
         for (ISystem system : systems) system.update();

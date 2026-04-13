@@ -6,7 +6,7 @@ import java.awt.*;
 public final class GamePanel extends JPanel {
 private final Game game;
     public GamePanel(Game game){
-        this.setPreferredSize(new Dimension(GameConfig.screenWidth, GameConfig.screenHeight));
+        this.setPreferredSize(new Dimension(GameConfig.SCREENWIDTH, GameConfig.SCREENHEIGHT));
         this.setBackground(Color.BLACK);
         this.setDoubleBuffered(true);
         //this.addKeyListener();

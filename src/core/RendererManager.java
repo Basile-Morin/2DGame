@@ -14,13 +14,13 @@ public class RendererManager {
         renderers.add(renderer);
     }
 
-    public void removeRenderer(Renderer renderer){
-        renderers.remove(renderer);
-    }
-
-    public ArrayList<Renderer> getRenderers(){
-        return renderers;
-    }
+//    public void removeRenderer(Renderer renderer){
+//        renderers.remove(renderer);
+//    }
+//
+//    public ArrayList<Renderer> getRenderers(){
+//        return renderers;
+//    }
 
     public void render(Graphics2D g2){
         for (Renderer renderer : renderers) renderer.draw(g2);

@@ -39,12 +39,12 @@ public class Game {
 
         //Chargement de la carte et de son renderer
         TileMap map = MapLoader.initializeMap();
-        TileSet tileSet = new TileSet();
+        TileSet tileSet = TileSet.getInstance();
         MapRenderer mapRenderer = new MapRenderer(map,camera,tileSet);
         rendererManager.addRenderer(mapRenderer);
 
         //Système de mouvement
-        MovementSystem movementSystem = new MovementSystem(entityManager,inputState);
+        MovementSystem movementSystem = new MovementSystem(entityManager,inputState,map);
         systemManager.addSystem(movementSystem);
 
 

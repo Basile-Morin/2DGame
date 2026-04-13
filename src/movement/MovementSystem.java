@@ -4,6 +4,7 @@ import core.GameConfig;
 import core.ISystem;
 import core.input.InputState;
 import entity.EntityManager;
+import map.TileMap;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -11,20 +12,22 @@ import java.awt.event.KeyEvent;
 public class MovementSystem implements ISystem {
     private final EntityManager entityManager;
     private final InputState inputState;
+    private final TileMap tileMap;
 
-    public MovementSystem(EntityManager entityManager, InputState inputState) {
+    public MovementSystem(EntityManager entityManager, InputState inputState, TileMap tileMap) {
         this.entityManager = entityManager;
         this.inputState = inputState;
+        this.tileMap = tileMap;
     }
 
     @Override
     public void update() {
+        //player
         Point wantedMovements = findWantedMovements(inputState);
-        entityManager.getPlayer().setWantedMovements(wantedMovements);
+        Point mouvements = EntityCollisionCalculator.handleWalls(entityManager.getPlayer(),tileMap,wantedMovements.x, wantedMovements.y);
 
         //temporaire
-        entityManager.getPlayer().move(wantedMovements.x, wantedMovements.y);
-
+        entityManager.getPlayer().move(mouvements.x, mouvements.y);
     }
 
     public Point findWantedMovements(InputState inputState){

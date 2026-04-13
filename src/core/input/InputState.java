@@ -1,7 +1,7 @@
 package core.input;
 
 public class InputState {
-    private boolean[] inputs;
+    private final boolean[] inputs;
     public InputState(){
         inputs=new boolean[600];
     }
