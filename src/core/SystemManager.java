@@ -1,5 +1,7 @@
 package core;
 
+import interfaces.ISystem;
+
 import java.util.ArrayList;
 
 public class SystemManager {

@@ -7,12 +7,13 @@ import java.io.InputStreamReader;
 
 public final class MapLoader {
 
-    public static TileMap initializeMap(){
+    public static TileMap initializeMap(String path){
         int[][] tempMap=new int[GameConfig.WORLDCOLNUMBER][GameConfig.WORLDLINENUMBER];
         TileMap map = new TileMap(GameConfig.WORLDCOLNUMBER,GameConfig.WORLDLINENUMBER);
+
         try {
-            InputStream is =map.getClass().getResourceAsStream("/map/map.txt");
-            if (is == null) throw new IllegalStateException("Map not found: /world/map.txt");
+            InputStream is =map.getClass().getResourceAsStream(path);
+            if (is == null) throw new IllegalStateException("Map not found: " + path);
             BufferedReader br=new BufferedReader(new InputStreamReader(is));
             for (int y = 0; y< GameConfig.WORLDLINENUMBER; y++){
                 String line=br.readLine();
@@ -24,7 +25,7 @@ public final class MapLoader {
             }
             map.setMap(tempMap);
         } catch (Exception e){
-            System.out.println(e.getMessage());
+            throw new RuntimeException("Impossible de charger la map : " + path, e);
         }
         return map;
     }

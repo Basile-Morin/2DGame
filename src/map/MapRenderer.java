@@ -1,7 +1,7 @@
 package map;
 
 import movement.Camera;
-import core.Renderer;
+import interfaces.Renderer;
 import core.GameConfig;
 
 import java.awt.*;
@@ -11,10 +11,10 @@ public class MapRenderer implements Renderer {
     private final TileMap map;
     private final TileSet tileset;
 
-    public MapRenderer(TileMap map, Camera camera, TileSet tileset){
+    public MapRenderer(TileMap map, Camera camera){
         this.camera=camera;
         this.map = map;
-        this.tileset = tileset;
+        this.tileset = map.getTileSet();
     }
 
     @Override

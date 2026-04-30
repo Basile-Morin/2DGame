@@ -1,5 +1,7 @@
 package core;
 
+import interfaces.Renderer;
+
 import java.awt.*;
 import java.util.ArrayList;
 

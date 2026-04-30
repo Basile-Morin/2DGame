@@ -4,11 +4,13 @@ public final class TileMap {
     private int cols;
     private int rows;
     private int[][] grid;
+    private final TileSet tileSet;
 
     public TileMap(int cols, int rows) {
         this.cols = cols;
         this.rows = rows;
         this.grid = new int[cols][rows];
+        this.tileSet = new TileSet();
     }
 
     public int[][] getMap() {
@@ -24,4 +26,7 @@ public final class TileMap {
         this.rows= map[0].length;
     }
 
+    public TileSet getTileSet() {
+        return tileSet;
+    }
 }

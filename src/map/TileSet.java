@@ -3,23 +3,17 @@ package map;
 import javax.imageio.ImageIO;
 import java.util.Objects;
 
+// Singleton
 public class TileSet {
 
-    private static TileSet instance; // unique instance
 
     private final Tile[] tile;
 
-    private TileSet() {
+    public TileSet() {
         tile = new Tile[2];
         initializeTileSprite();
     }
 
-    public static TileSet getInstance() {
-        if (instance == null) {
-            instance = new TileSet();
-        }
-        return instance;
-    }
 
     private void initializeTileSprite() {
         try {

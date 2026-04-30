@@ -1,0 +1,97 @@
+@startuml
+
+
+enum entity.EntityType {
+}
+class entity.InteractionFactory{
+}
+
+class entity.EntityFactory {
+-entityManager : EntityManager
++ EntityFactory(entityManager:EntityManager)
++ createPlayer(x:int, y:int) : Player
++ createEnemy(x:int, y:int, enemyId:int ) : Enemy
++ createNpc(x:int, y:int, npcId:int) : Npc
++ createWorldObject(x:int, y:int, objectId:int) : WorldObject
+
+}
+
+class entity.EntityManager {
+- entities : Map<Integer, Entity>
+- nextId : int
++ EntityManager()
++ generateId() : int
++ addEntity(entity:Entity) : void
++ removeEntity(id:int) : void
++ getEntity(id:int) : Entity
++ getEntities() : Collection<Entity>
++ getPlayers() : Collection<Player>
++ getEntitiesByType(type:EntityType) : List<Entity>
++ clear() : void
+}
+
+class entity.Entity {
+- id : int
+- active : boolean
+- movementState : MovementState
+- combatStats : CombatStats
+- interactionData : InteractionData
+- entityType : EntityType
+- animationSet
++ position : Point
++ translate(int dX, int dY) : void
++ hasCombatStats() : boolean
++ hasMovementState() : boolean
++ hasInteractionData() : boolean
++ isActive() : boolean
++ deactivate() : void
++ update() : void
++ setAnimationSet(animationSet : AnimationSet) : void
++ nextFrame() : void
++ getFrame() : BufferedImage
+}
+class entity.Player {
+- score : int
+- experience : int
+- level : int
+}
+class entity.Enemy {
+
+}
+class entity.Npc {
+
+}
+class entity.WorldObject {
+}
+class entity.data.CombatStats {
++ damage:int
+}
+class entity.data.InteractionData {
++ interactions : Map<Integer,Interaction>
++ nextInteractionId : int
+}
+class entity.data.MovementState {
++ direction : Direction
++ velocity : Point
++ speed : int
+}
+class entity.data.CollisionData{
+- Area : Rectangle
+- SolidArea : Rectangle
+}
+class entity.data.Interaction {
++ text : String
++ options : Map<String, Integer>
++ id : int
+}
+
+Entity --> EntityType : a un type
+Entity --> MovementState
+Entity --> entity.data.CombatStats
+Npc --> InteractionData
+Player --|> Entity
+Enemy --|> Entity
+Npc --|> Entity
+WorldObject --|> Entity
+
+@enduml

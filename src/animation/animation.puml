@@ -1,0 +1,29 @@
+@startuml
+class animation.AnimationManager {
+- Map<Class<? extends Entity>,AnimationSet> map
++ void initializeAnimationSets()
++ void update()
+}
+class animation.AnimationSet {
+//static final constantes..
+- Animation[] animations
+- int currentAnimation
++ void update()
++ void setCurrentAnimation(int animation)
++ BufferedImage getFrame()
+
+}
+class animation.Animation {
+- BufferedImage[] frames
+- int currentFrame
+- int counter
+- int animationLength
++ BufferedImage getFrame()
++ void nextFrame()
++ void reset()
+}
+
+Animation <-- animation.AnimationSet : possède
+animation.AnimationSet <-- animation.AnimationManager : Initialise et possède
+
+@enduml
