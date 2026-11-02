@@ -93,5 +93,6 @@ Player --|> Entity
 Enemy --|> Entity
 Npc --|> Entity
 WorldObject --|> Entity
+EntityManager o-- Entity : possede
 
 @enduml

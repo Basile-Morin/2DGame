@@ -3,13 +3,13 @@ package animation;
 import core.GameConfig;
 import entity.Entity;
 import entity.EntityManager;
-import interfaces.Renderer;
+import interfaces.IRenderer;
 import movement.Camera;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class EntityAnimationRenderer implements Renderer {
+public class EntityAnimationRenderer implements IRenderer {
     private final Camera camera;
     private final EntityManager entityManager;
 

@@ -1,18 +1,18 @@
 package core;
 
-import interfaces.Renderer;
+import interfaces.IRenderer;
 
 import java.awt.*;
 import java.util.ArrayList;
 
 public class RendererManager {
-    private final ArrayList<Renderer> renderers;
+    private final ArrayList<IRenderer> renderers;
 
     public RendererManager() {
         this.renderers = new ArrayList<>();
     }
 
-    public void addRenderer(Renderer renderer){
+    public void addRenderer(IRenderer renderer){
         renderers.add(renderer);
     }
 
@@ -25,6 +25,6 @@ public class RendererManager {
 //    }
 
     public void render(Graphics2D g2){
-        for (Renderer renderer : renderers) renderer.draw(g2);
+        for (IRenderer renderer : renderers) renderer.draw(g2);
     }
 }

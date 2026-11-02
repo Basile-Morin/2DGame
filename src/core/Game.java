@@ -56,7 +56,6 @@ public class Game {
         Camera camera = new Camera(player);
 
         //Chargement de la carte et de son renderer
-        TileSet tileSet = new TileSet();
         TileMap map = MapLoader.initializeMap("/map/map.txt");
         MapRenderer mapRenderer = new MapRenderer(map,camera);
         rendererManager.addRenderer(mapRenderer);

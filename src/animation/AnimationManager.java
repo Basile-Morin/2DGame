@@ -103,7 +103,7 @@ public class AnimationManager {
         );
     }
 
-    public AnimationSet createAnimationSet(Class<? extends Entity> clazz) {
+    public AnimationSet createAnimationSet(Class<? extends Entity> clazz) throws IllegalArgumentException {
         EnumMap<AnimationType, BufferedImage[]> data = entityAnimationDataMap.get(clazz);
 
         if (data == null) throw new IllegalArgumentException("Aucune animation enregistrée pour : " + clazz.getName());

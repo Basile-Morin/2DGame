@@ -2,7 +2,7 @@ package interfaces;
 
 import java.awt.*;
 
-public interface Renderer {
+public interface IRenderer {
 
     void draw(Graphics2D g);
 }

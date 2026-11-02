@@ -1,12 +1,12 @@
 package map;
 
 import movement.Camera;
-import interfaces.Renderer;
+import interfaces.IRenderer;
 import core.GameConfig;
 
 import java.awt.*;
 
-public class MapRenderer implements Renderer {
+public class MapRenderer implements IRenderer {
     private final Camera camera;
     private final TileMap map;
     private final TileSet tileset;
