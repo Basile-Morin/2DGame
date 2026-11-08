@@ -12,10 +12,11 @@ public class GameConfig {
     public static final int SCREENWIDTH = MAXSCREENCOL * TILESIZE; //768 pixels
     public static final int SCREENHEIGHT = MAXSCREENLINE * TILESIZE;  //576 pixels
     public static final int FPS=60;
-    public static final double DRAWINTERVAL_NS = 1_000_000_000.0 / FPS;//time in milliseconds
+    public static final long UPDATE_INTERVAL_NS = 1_000_000_000L / FPS;
+    public static final double FIXED_DELTA_SECONDS = 1.0 / FPS;
     public static final int WORLDCOLNUMBER =32;
     public static final int WORLDLINENUMBER =24;
-    public static final int ENTITYBASESPEED = 4;
+    public static final double ENTITY_BASE_SPEED_PX_PER_SECOND = 240.0;
     public static final int ORIGINALENTITYWIDTH=16;
     public static final int ORIGINALENTITYHEIGHT=16;
     public static final int ENTITYWIDTH = ORIGINALENTITYWIDTH * SCALE;

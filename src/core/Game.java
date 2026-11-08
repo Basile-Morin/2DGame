@@ -30,9 +30,9 @@ public class Game {
         this.systemManager = new SystemManager();
     }
 
-    public void update(){
+    public void update(double deltaSeconds){
         synchronized (gameStateLock) {
-            systemManager.update();
+            systemManager.update(deltaSeconds);
         }
     }
 

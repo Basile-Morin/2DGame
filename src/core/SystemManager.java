@@ -23,7 +23,7 @@ public class SystemManager {
 //        return systems;
 //    }
 
-    public void update(){
-        for (ISystem system : systems) system.update();
+    public void update(double deltaSeconds){
+        for (ISystem system : systems) system.update(deltaSeconds);
     }
 }

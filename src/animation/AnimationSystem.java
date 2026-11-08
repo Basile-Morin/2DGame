@@ -12,9 +12,9 @@ public class AnimationSystem implements ISystem {
     }
 
     @Override
-    public void update() {
+    public void update(double deltaSeconds) {
         for (Entity entity : entityManager.getEntities()){
-            entity.nextFrame();
+            entity.nextFrame(deltaSeconds);
         }
     }
 }

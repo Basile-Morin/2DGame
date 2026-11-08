@@ -1,5 +1,5 @@
 package interfaces;
 
 public interface ISystem {
-    void update();
+    void update(double deltaSeconds);
 }

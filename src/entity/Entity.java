@@ -42,9 +42,9 @@ public abstract class Entity {
     public void setAnimationSet(AnimationSet animationSet){
         this.animationSet=animationSet;
     }
-    public void nextFrame(){
+    public void nextFrame(double deltaSeconds){
         if (animationSet==null) return;
-        animationSet.update();
+        animationSet.update(deltaSeconds);
     }
 
     public AnimationSet getAnimationSet(){
@@ -107,7 +107,7 @@ class entity.Entity {
 + deactivate() : void
 + update() : void
 + setAnimationSet(animationSet : AnimationSet) : void
-+ nextFrame() : void
++ nextFrame(deltaSeconds : double) : void
 + getFrame() : BufferedImage
 }
  */

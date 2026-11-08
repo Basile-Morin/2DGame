@@ -16,7 +16,7 @@ public class AnimationManager {
             Class<? extends Entity>,
             EnumMap<AnimationType, BufferedImage[]>
             > entityAnimationDataMap;
-    private static final int FRAME_DURATION = 30;
+    private static final double FRAME_DURATION_SECONDS = 0.5;
 
     public AnimationManager() {
         entityAnimationDataMap = new HashMap<>();
@@ -113,7 +113,7 @@ public class AnimationManager {
         for (Map.Entry<AnimationType, BufferedImage[]> entry : data.entrySet()) {
             animations.put(
                     entry.getKey(),
-                    new Animation(entry.getValue(), FRAME_DURATION, true)
+                    new Animation(entry.getValue(), FRAME_DURATION_SECONDS, true)
             );
         }
 

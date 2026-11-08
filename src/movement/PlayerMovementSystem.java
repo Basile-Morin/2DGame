@@ -6,16 +6,18 @@ import core.GameConfig;
 import entity.Player;
 import interfaces.ISystem;
 import core.input.InputState;
-import entity.EntityManager;
 import map.TileMap;
 
-import java.awt.*;
+import java.awt.Point;
 import java.awt.event.KeyEvent;
+import java.awt.geom.Point2D;
 
 public class PlayerMovementSystem implements ISystem {
     private final Player player;
     private final InputState inputState;
     private final TileMap tileMap;
+    private double fractionalMovementX;
+    private double fractionalMovementY;
 
     public PlayerMovementSystem(Player player, InputState inputState, TileMap tileMap) {
         this.player = player;
@@ -24,38 +26,61 @@ public class PlayerMovementSystem implements ISystem {
     }
 
     @Override
-    public void update() {
+    public void update(double deltaSeconds) {
 
-        Point wantedMovements = findWantedMovements(inputState);
+        Point2D.Double wantedMovements = findWantedMovements(inputState, deltaSeconds);
+        double exactX = wantedMovements.x + fractionalMovementX;
+        double exactY = wantedMovements.y + fractionalMovementY;
+        int wantedX = (int) exactX;
+        int wantedY = (int) exactY;
+        fractionalMovementX = exactX - wantedX;
+        fractionalMovementY = exactY - wantedY;
+
         Point mouvements = EntityCollisionCalculator.handleWalls(
                 player,
                 tileMap,
-                wantedMovements.x,
-                wantedMovements.y
+                wantedX,
+                wantedY
         );
+
+        if (mouvements.x != wantedX) fractionalMovementX = 0.0;
+        if (mouvements.y != wantedY) fractionalMovementY = 0.0;
 
         animationFinder(player, mouvements.x, mouvements.y);
 
         player.translate(mouvements.x, mouvements.y);
     }
 
-    public Point findWantedMovements(InputState inputState){
-        int dX=0,dY=0;
+    public Point2D.Double findWantedMovements(InputState inputState, double deltaSeconds){
+        int directionX = 0;
+        int directionY = 0;
         boolean[] inputs = inputState.getInputs();
 
         if (inputs[KeyEvent.VK_Z] && !inputs[KeyEvent.VK_S]) {
-            dY = -1* GameConfig.ENTITYBASESPEED;
+            directionY = -1;
         } else if (inputs[KeyEvent.VK_S] && !inputs[KeyEvent.VK_Z]) {
-            dY = GameConfig.ENTITYBASESPEED;
+            directionY = 1;
         }
 
         if (inputs[KeyEvent.VK_Q] && !inputs[KeyEvent.VK_D]) {
-            dX = -1*GameConfig.ENTITYBASESPEED;
+            directionX = -1;
         } else if (inputs[KeyEvent.VK_D] && !inputs[KeyEvent.VK_Q]) {
-            dX = GameConfig.ENTITYBASESPEED;
+            directionX = 1;
         }
 
-        return new Point(dX,dY);
+        if (directionX == 0) fractionalMovementX = 0.0;
+        if (directionY == 0) fractionalMovementY = 0.0;
+
+        if (directionX == 0 && directionY == 0) {
+            return new Point2D.Double();
+        }
+
+        double directionLength = Math.hypot(directionX, directionY);
+        double distance = GameConfig.ENTITY_BASE_SPEED_PX_PER_SECOND * deltaSeconds;
+        return new Point2D.Double(
+                directionX / directionLength * distance,
+                directionY / directionLength * distance
+        );
     }
 
     public void animationFinder(Player player, int dX, int dY){

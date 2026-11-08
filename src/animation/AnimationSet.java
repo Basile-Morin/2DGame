@@ -13,10 +13,10 @@ public class AnimationSet {
         this.currentAnimation = AnimationType.IDLE_DOWN;
     }
 
-    public void update() {
+    public void update(double deltaSeconds) {
         Animation anim = animations.get(currentAnimation);
         if (anim != null) {
-            anim.update();
+            anim.update(deltaSeconds);
         }
     }
 
