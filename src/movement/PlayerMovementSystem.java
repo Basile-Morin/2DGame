@@ -83,7 +83,7 @@ public class PlayerMovementSystem implements ISystem {
         );
     }
 
-    public void animationFinder(Player player, int dX, int dY){
+    public static void animationFinder(Player player, int dX, int dY){
         AnimationType oldAnimation = player.getAnimationSet().getCurrentAnimation();
         AnimationType newAnimation = findDirection(dX,dY);
         AnimationSet animationSet = player.getAnimationSet();
@@ -106,7 +106,7 @@ public class PlayerMovementSystem implements ISystem {
 
     }
 
-    public AnimationType findDirection(int dX, int dY){
+    public static AnimationType findDirection(int dX, int dY){
 
         AnimationType animationType =null;
         double dxRatio,dyRatio,tolerance=0.3;

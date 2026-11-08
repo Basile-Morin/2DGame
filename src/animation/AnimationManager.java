@@ -97,9 +97,9 @@ public class AnimationManager {
         }
     }
 
-    private BufferedImage load(String path) throws IOException {
+    private static BufferedImage load(String path) throws IOException {
         return javax.imageio.ImageIO.read(
-                Objects.requireNonNull(getClass().getResourceAsStream(path))
+                Objects.requireNonNull(AnimationManager.class.getResourceAsStream(path))
         );
     }
 
