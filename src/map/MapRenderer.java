@@ -24,15 +24,15 @@ public class MapRenderer implements IRenderer {
 
 
     public void drawMap(Graphics2D g){
-        int playerX = camera.getX();
-        int playerY = camera.getY();
+        int cameraX = camera.getX();
+        int cameraY = camera.getY();
         int playerScreenX= (GameConfig.SCREENWIDTH - GameConfig.TILESIZE) / 2;
         int playerScreenY= (GameConfig.SCREENHEIGHT - GameConfig.TILESIZE) / 2;
         for(int y = 0; y< GameConfig.WORLDLINENUMBER; y++){
             for(int x = 0; x<GameConfig.WORLDCOLNUMBER; x++){
                 int tileNum =map.getMap()[x][y];
-                int tileScreenX= (x * GameConfig.TILESIZE) - playerX +playerScreenX; //CaseX - JoueurX + JoueurX sur l'ecran
-                int tileScreenY= (y * GameConfig.TILESIZE) - playerY +playerScreenY;   //CaseY - JoueurY + JoueurY sur l'ecran
+                int tileScreenX= (x * GameConfig.TILESIZE) - cameraX +playerScreenX; //CaseX - JoueurX + JoueurX sur l'ecran
+                int tileScreenY= (y * GameConfig.TILESIZE) - cameraY +playerScreenY;   //CaseY - JoueurY + JoueurY sur l'ecran
                 if (tileScreenX<-GameConfig.TILESIZE || tileScreenY<-GameConfig.TILESIZE || tileScreenX>GameConfig.WORLDCOLNUMBER * GameConfig.TILESIZE || tileScreenY>GameConfig.WORLDLINENUMBER *GameConfig.TILESIZE) continue;
                 g.drawImage(tileset.getTile(tileNum).image, tileScreenX, tileScreenY, GameConfig.TILESIZE, GameConfig.TILESIZE, null);
 

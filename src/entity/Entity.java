@@ -1,7 +1,6 @@
 package entity;
 
 import animation.AnimationSet;
-import animation.EntityAnimationRenderer;
 import entity.data.*;
 
 import java.awt.*;
@@ -9,7 +8,6 @@ import java.awt.image.BufferedImage;
 
 public abstract class Entity {
     protected final int id;
-    protected boolean active;
     protected MovementState movementState;
     protected CombatStats combatStats;
     protected InteractionData interactionData;
@@ -23,7 +21,6 @@ public abstract class Entity {
         this.id=id;
         this.type=type;
         position = new Point(0,0);
-        this.active=true;
     }
 
     public void translate(int dX, int dY){
@@ -42,15 +39,6 @@ public abstract class Entity {
         return interactionData != null;
     }
 
-    public boolean isActive(){
-        return active;
-    }
-    public void deactivate(){
-        active=false;
-    }
-    public void activate(){
-        active=true;
-    }
     public void setAnimationSet(AnimationSet animationSet){
         this.animationSet=animationSet;
     }

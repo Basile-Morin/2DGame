@@ -1,17 +1,24 @@
 package core.input;
 
 public class InputState {
-    private final boolean[] inputs;
-    public InputState(){
-        inputs=new boolean[600];
-    }
-
+    private final boolean[] inputs = new boolean[600];
+    private final Object lock = new Object();
 
     public boolean[] getInputs() {
-        return inputs;
+        synchronized (lock) {
+            return inputs.clone();
+        }
+    }
+
+    public boolean getInput(int code) {
+        synchronized (lock) {
+            return inputs[code];
+        }
     }
 
     public void setInput(boolean input, int code) {
-        this.inputs[code] = input;
+        synchronized (lock) {
+            inputs[code] = input;
+        }
     }
 }

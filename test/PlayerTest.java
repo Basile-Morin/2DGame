@@ -63,15 +63,6 @@ public class PlayerTest {
         assertNull(p.getInteractionData());
     }
 
-    @Test
-    public void playerCanBeActivatedAndDeactivated() {
-
-        p.activate();
-        assertTrue(p.isActive());
-
-        p.deactivate();
-        assertFalse(p.isActive());
-    }
 
     @Test
     public void playerHasNoFrameWithoutAnimationSet() {
