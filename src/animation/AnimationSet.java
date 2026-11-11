@@ -26,7 +26,7 @@ public class AnimationSet {
     }
 
     public void setAnimation(AnimationType type) {
-        if (type == null || type == currentAnimation) {
+        if (type == null || type == currentAnimation || !animations.containsKey(type)) {
             return;
         }
 
@@ -40,5 +40,9 @@ public class AnimationSet {
 
     public AnimationType getCurrentAnimation() {
         return currentAnimation;
+    }
+
+    public boolean hasAnimation(AnimationType type) {
+        return animations.containsKey(type);
     }
 }
