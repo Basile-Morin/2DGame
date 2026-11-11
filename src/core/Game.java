@@ -7,6 +7,7 @@ import animation.AnimationSystem;
 import core.input.InputState;
 import entity.Enemy;
 import entity.EntityFactory;
+import movement.EnemyAISystem;
 import movement.MovementSystem;
 import movement.Camera;
 import movement.PlayerInputSystem;
@@ -67,6 +68,7 @@ public class Game {
         rendererManager.addRenderer(mapRenderer);
 
         // L'entrée du joueur définit une intention ; le système commun applique le mouvement.
+        systemManager.addSystem(new EnemyAISystem(entityManager));
         systemManager.addSystem(new PlayerInputSystem(player, inputState));
         systemManager.addSystem(new MovementSystem(entityManager, map));
 

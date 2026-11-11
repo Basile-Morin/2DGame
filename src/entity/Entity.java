@@ -22,6 +22,7 @@ public abstract class Entity {
         this.id=id;
         this.type=type;
         position = new Point(0,0);
+
     }
 
     public void translate(int dX, int dY){
