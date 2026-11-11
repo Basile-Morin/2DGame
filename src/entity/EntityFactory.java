@@ -12,13 +12,25 @@ public class EntityFactory {
         this.animationManager = animationManager;
     }
 
-    public Player createPlayer(int tileX, int tileY) {
+    public Player spawnPlayer(int tileX, int tileY) {
+        Player player = createPlayer(tileX, tileY);
+        entityManager.addEntity(player);
+        return player;
+    }
+
+    public Enemy spawnEnemy(int tileX, int tileY) {
+        Enemy enemy = createEnemy(tileX, tileY);
+        entityManager.addEntity(enemy);
+        return enemy;
+    }
+
+    private Player createPlayer(int tileX, int tileY) {
         Player player = new Player(entityManager.generateId());
         initialize(player, Player.class, tileX, tileY);
         return player;
     }
 
-    public Enemy createEnemy(int tileX, int tileY) {
+    private Enemy createEnemy(int tileX, int tileY) {
         Enemy enemy = new Enemy(entityManager.generateId());
         initialize(enemy, Enemy.class, tileX, tileY);
         return enemy;

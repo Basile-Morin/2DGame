@@ -51,11 +51,9 @@ public class Game {
         EntityFactory entityFactory = new EntityFactory(entityManager, animationManager);
 
         //Création du joueur
-        Player player = entityFactory.createPlayer(0,0);
-        entityManager.addEntity(player);
+        Player player = entityFactory.spawnPlayer(0,0);
 
-        Enemy enemy = entityFactory.createEnemy(10,10);
-        entityManager.addEntity(enemy);
+        Enemy enemy = entityFactory.spawnEnemy(10,10);
 
         //Création camera
         Camera camera = new Camera(player);
