@@ -1,98 +1,98 @@
 @startuml
+title Modèle des entités
 
+left to right direction
+skinparam linetype ortho
+skinparam packageStyle rectangle
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam nodesep 45
+skinparam ranksep 55
+hide empty members
 
-enum entity.EntityType {
-}
-class entity.InteractionFactory{
-}
-
-class entity.EntityFactory {
--entityManager : EntityManager
-+ EntityFactory(entityManager:EntityManager)
-+ createPlayer(x:int, y:int) : Player
-+ createEnemy(x:int, y:int, enemyId:int ) : Enemy
-+ createNpc(x:int, y:int, npcId:int) : Npc
-+ createWorldObject(x:int, y:int, objectId:int) : WorldObject
-
-}
-
-class entity.EntityManager {
-- entities : Map<Integer, Entity>
-- nextId : int
-+ EntityManager()
-+ generateId() : int
-+ addEntity(entity:Entity) : void
-+ removeEntity(id:int) : void
-+ getEntity(id:int) : Entity
-+ getEntities() : Collection<Entity>
-+ getPlayers() : Collection<Player>
-+ getEntitiesByType(type:EntityType) : List<Entity>
-+ clear() : void
-}
-
-class entity.Entity {
-- id : int
-- active : boolean
-- movementState : MovementState
-- combatStats : CombatStats
-- interactionData : InteractionData
-- entityType : EntityType
-- animationSet
-+ position : Point
-+ translate(int dX, int dY) : void
-+ hasCombatStats() : boolean
-+ hasMovementState() : boolean
-+ hasInteractionData() : boolean
-+ isActive() : boolean
-+ deactivate() : void
-+ update() : void
-+ setAnimationSet(animationSet : AnimationSet) : void
-+ nextFrame() : void
-+ getFrame() : BufferedImage
-}
-class entity.Player {
-- score : int
-- experience : int
-- level : int
-}
-class entity.Enemy {
-
-}
-class entity.Npc {
-
-}
-class entity.WorldObject {
-}
-class entity.data.CombatStats {
-+ damage:int
-}
-class entity.data.InteractionData {
-+ interactions : Map<Integer,Interaction>
-+ nextInteractionId : int
-}
-class entity.data.MovementState {
-+ direction : Direction
-+ velocity : Point
-+ speed : int
-}
-class entity.data.CollisionData{
-- Area : Rectangle
-- SolidArea : Rectangle
-}
-class entity.data.Interaction {
-+ text : String
-+ options : Map<String, Integer>
-+ id : int
+package "Entités" {
+  abstract class Entity {
+    #id : int
+    #type : EntityType
+    #position : Point
+    #movementState : MovementState
+    #combatStats : CombatStats
+    #interactionData : InteractionData
+    #collisionData : CollisionData
+    #animationSet : AnimationSet
+    +translate(dX : int, dY : int) : void
+    +hasMovementState() : boolean
+    +getPosition() : Point
+    +getMovementState() : MovementState
+    +getCollisionData() : CollisionData
+  }
+  class Player
+  class Enemy
+  class Npc <<placeholder>>
+  abstract class WorldObject <<placeholder>>
+  enum EntityType
 }
 
-Entity --> EntityType : a un type
-Entity --> MovementState
-Entity --> entity.data.CombatStats
-Npc --> InteractionData
+package "État et données" {
+  class MovementState {
+    +direction : Direction
+    +desiredMovementX : double
+    +desiredMovementY : double
+    +movementDelta : Point
+    +speed : double
+    +fractionalX : double
+    +fractionalY : double
+  }
+  class CollisionData {
+    +area : Rectangle
+    +solidArea : Rectangle
+  }
+  class CombatStats {
+    +damage : int
+  }
+  class InteractionData
+  enum Direction
+}
+
+package "Gestion" {
+  class EntityManager {
+    -entityMap : Map<Integer, Entity>
+    -nextId : int
+    +generateId() : int
+    +addEntity(entity : Entity) : void
+    +removeEntity(id : int) : void
+    +getEntity(id : int) : Entity
+    +getEntities() : Collection<Entity>
+  }
+  class EntityFactory {
+    -entityManager : EntityManager
+    +createPlayer(x : int, y : int) : Player
+    +createEnemy(x : int, y : int) : Enemy
+  }
+}
+
 Player --|> Entity
 Enemy --|> Entity
-Npc --|> Entity
-WorldObject --|> Entity
-EntityManager o-- Entity : possede
+Entity --> EntityType
+Entity *-- "0..1" MovementState
+Entity *-- "0..1" CollisionData
+Entity *-- "0..1" CombatStats
+Entity *-- "0..1" InteractionData
+MovementState --> Direction : orientation du sprite
+
+EntityManager o-- "0..*" Entity
+EntityFactory --> EntityManager : attribue les identifiants
+EntityFactory ..> Player : crée
+EntityFactory ..> Enemy : crée
+
+note bottom of Npc
+  Npc et WorldObject sont des placeholders.
+  Ils ne sont pas encore intégrés à Entity.
+end note
+
+note bottom of MovementState
+  L'intention de déplacement est un vecteur continu.
+  direction conserve l'orientation parmi les 8 sprites.
+end note
 
 @enduml

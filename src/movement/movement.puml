@@ -1,0 +1,80 @@
+@startuml
+title Intention, déplacement et collisions
+
+left to right direction
+skinparam linetype ortho
+skinparam packageStyle rectangle
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam nodesep 45
+skinparam ranksep 60
+
+package "Intention" {
+  class PlayerInputSystem {
+    -player : Player
+    -inputState : InputState
+    +update(deltaSeconds : double) : void
+  }
+  class InputState
+  class Player
+}
+
+package "Système commun" {
+  interface ISystem {
+    +update(deltaSeconds : double) : void
+  }
+  class MovementSystem {
+    -entityManager : EntityManager
+    -tileMap : TileMap
+    +update(deltaSeconds : double) : void
+  }
+  class EntityCollisionCalculator {
+    {static} +handleWalls(entity : Entity, map : TileMap, dX : int, dY : int) : Point
+  }
+}
+
+package "Monde et entités" {
+  class EntityManager
+  abstract class Entity {
+    +translate(dX : int, dY : int) : void
+  }
+  class MovementState {
+    +direction : Direction
+    +desiredMovementX : double
+    +desiredMovementY : double
+    +movementDelta : Point
+    +speed : double
+    +fractionalX : double
+    +fractionalY : double
+  }
+  enum Direction
+  class TileMap
+}
+
+ISystem <|.. PlayerInputSystem
+ISystem <|.. MovementSystem
+PlayerInputSystem -> InputState : lit les touches
+PlayerInputSystem -> Player : écrit le vecteur voulu
+Player --> MovementState
+MovementSystem --> EntityManager : parcourt les entités
+EntityManager o-- "0..*" Entity
+Entity *-- MovementState
+MovementSystem ..> MovementState : lit l'intention et met à jour le résultat
+MovementSystem ..> Entity : applique le déplacement
+MovementState -> Direction : orientation du sprite
+MovementSystem --> TileMap : carte de collision
+MovementSystem ..> EntityCollisionCalculator : résout les collisions
+EntityCollisionCalculator --> TileMap
+
+note bottom of MovementSystem
+  Le vecteur voulu peut pointer dans toute direction.
+  Le système le normalise puis applique speed * deltaSeconds.
+  Les entités sans intention restent immobiles.
+end note
+
+note bottom of PlayerInputSystem
+  Une IA peut écrire le même vecteur dans le
+  MovementState d'un ennemi; MovementSystem reste partagé.
+end note
+
+@enduml

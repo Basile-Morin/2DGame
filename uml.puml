@@ -1,96 +1,71 @@
 @startuml
-interface ISystem {
-~ void update()
+title Architecture générale de Jeu2
+
+left to right direction
+skinparam linetype ortho
+skinparam packageStyle rectangle
+skinparam shadowing false
+skinparam componentStyle rectangle
+skinparam nodesep 45
+skinparam ranksep 60
+
+package "Présentation" as presentation {
+  component "Main / Swing" as ui
+  component "GameLoop" as loop
 }
 
-class map.MapLoader {
-+ {static} TileMap initializeMap()
+package "Orchestration" as orchestration {
+  component "Game" as game
+  component "SystemManager" as systems
+  component "RendererManager" as renderers
 }
 
-
-
-
-
-class entity.EntityManager {
-- List<Entity> entities
-+ void addEntity(Entity)
-+ void removeEntity(Entity)
-+ List<Entity> getEntities()
-+ Player getPlayer()
+package "Entrées" as input {
+  component "InputListener" as listener
+  component "InputState" as inputState
+  component "PlayerInputSystem" as playerInput
 }
 
-
-abstract class entity.Entity {
-# Point wantedMovements
-# Point coordinates
-+ void move(int,int)
-+ int getX()
-+ int getY()
-+ Point getCoordinates()
-+ Point getWantedMovements()
-+ void setWantedMovements(Point)
+package "Simulation" as simulation {
+  component "MovementSystem" as movement
+  component "AnimationSystem" as animation
+  component "EntityCollisionCalculator" as collision
 }
 
-
-class map.Tile {
-+ BufferedImage image
-+ boolean collision
+package "Modèle" as model {
+  component "Entity / EntityManager" as entities
+  component "MovementState" as movementState
 }
 
-class map.TileSet {
-- Tile[] tile
-+ void initializeTileSprite()
-+ Tile getTile(int)
+package "Carte et affichage" as world {
+  component "TileMap" as tileMap
+  component "MapRenderer" as mapRenderer
+  component "EntityAnimationRenderer" as entityRenderer
 }
 
+ui --> loop
+loop --> game : update(dt)
+loop --> ui : repaint()
+game --> systems : update(dt)
+game --> renderers : render()
+listener --> inputState : clavier
+inputState --> playerInput : état des touches
+systems --> playerInput
+systems --> movement
+systems --> animation
+playerInput --> movementState : intention
+movement --> movementState : résultat du déplacement
+movement --> collision : collisions
+collision --> tileMap
+animation --> movementState : orientation et déplacement réel
+renderers --> mapRenderer
+renderers --> entityRenderer
+mapRenderer --> tileMap
+entityRenderer --> entities
 
-class map.MapRenderer {
-- Camera camera
-- TileMap map
-- TileSet tileset
-+ void draw(Graphics2D)
-+ void drawMap(Graphics2D)
-}
+note bottom of systems
+  Ordre d'exécution :
+  entrée du joueur -> mouvement -> animation
+end note
 
-
-
-
-class movement.Camera {
-- Point coordinates
-+ int getX()
-+ int getY()
-}
-
-
-class entity.Player {
-}
-
-
-interface Renderer {
-~ void draw(Graphics2D)
-}
-
-class map.TileMap {
-- int cols
-- int rows
-- int[][] grid
-+ int[][] getMap()
-+ int getCols()
-+ int getRows()
-+ void setMap(int[][])
-}
-
-class movement.MovementSystem {
-- EntityManager entityManager
-- InputState inputState
-+ void update()
-+ Point findWantedMovements(InputState)
-}
-
-
-
-
-Renderer <|.. map.MapRenderer
-entity.Entity <|-- entity.Player
-ISystem <|.. movement.MovementSystem
 @enduml

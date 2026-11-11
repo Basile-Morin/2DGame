@@ -1,29 +1,90 @@
 @startuml
-class animation.AnimationManager {
-- Map<Class<? extends Entity>,AnimationSet> map
-+ void initializeAnimationSets()
-+ void update()
-}
-class animation.AnimationSet {
-//static final constantes..
-- Animation[] animations
-- int currentAnimation
-+ void update()
-+ void setCurrentAnimation(int animation)
-+ BufferedImage getFrame()
+title Animations des entités
 
-}
-class animation.Animation {
-- BufferedImage[] frames
-- int currentFrame
-- int counter
-- int animationLength
-+ BufferedImage getFrame()
-+ void nextFrame()
-+ void reset()
+left to right direction
+skinparam linetype ortho
+skinparam packageStyle rectangle
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam nodesep 45
+skinparam ranksep 55
+
+package "Système" {
+  class AnimationSystem {
+    -entityManager : EntityManager
+    +update(deltaSeconds : double) : void
+  }
+  interface ISystem {
+    +update(deltaSeconds : double) : void
+  }
 }
 
-Animation <-- animation.AnimationSet : possède
-animation.AnimationSet <-- animation.AnimationManager : Initialise et possède
+package "Modèle d'animation" {
+  class AnimationManager {
+    -entityAnimationDataMap : Map<Class, EnumMap<AnimationType, BufferedImage[]>>
+    {static} -FRAME_DURATION_SECONDS : double
+    +createAnimationSet(clazz : Class<Entity>) : AnimationSet
+  }
+  class AnimationSet {
+    -animations : EnumMap<AnimationType, Animation>
+    -currentAnimation : AnimationType
+    +update(deltaSeconds : double) : void
+    +setAnimation(type : AnimationType) : void
+    +getCurrentAnimation() : AnimationType
+    +hasAnimation(type : AnimationType) : boolean
+    +getFrame() : BufferedImage
+  }
+  class Animation {
+    -frames : BufferedImage[]
+    -looping : boolean
+    -finished : boolean
+    -currentFrame : int
+    -elapsedSeconds : double
+    -frameDurationSeconds : double
+    +update(deltaSeconds : double) : void
+    +reset() : void
+    +getFrame() : BufferedImage
+    +isFinished() : boolean
+  }
+  enum AnimationType
+  enum AnimationCategory
+}
+
+package "Entités" {
+  class EntityManager
+  abstract class Entity {
+    -animationSet : AnimationSet
+    +nextFrame(deltaSeconds : double) : void
+    +getFrame() : BufferedImage
+  }
+  class MovementState {
+    +direction : Direction
+    +movementDelta : Point
+  }
+  enum Direction
+}
+
+ISystem <|.. AnimationSystem
+AnimationSystem --> EntityManager : parcourt
+AnimationSystem --> MovementState : choisit l'animation
+EntityManager o-- "0..*" Entity
+Entity *-- "0..1" AnimationSet
+AnimationSet *-- "1..*" Animation
+AnimationSet --> AnimationType : sélectionne
+AnimationType --> AnimationCategory
+AnimationManager ..> Entity : associe les images à la classe
+AnimationManager ..> AnimationSet : construit
+Entity --> MovementState : lit orientation et déplacement
+
+note bottom of AnimationSystem
+  Le système choisit marche/repos d'après le déplacement réel.
+  Les vecteurs continus sont convertis vers les 8 orientations
+  de sprite disponibles.
+end note
+
+note bottom of AnimationManager
+  Les ressources de sprites enregistrées actuellement
+  correspondent au joueur.
+end note
 
 @enduml

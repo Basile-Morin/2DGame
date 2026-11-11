@@ -1,91 +1,121 @@
 @startuml
+title Démarrage, boucle et orchestration
 
-class core.Game {
-- InputState inputState
-- RendererManager rendererManager
-- SystemManager systemManager
-+ void update()
-+ void render(Graphics2D)
-+ void initialize()
+left to right direction
+skinparam linetype ortho
+skinparam packageStyle rectangle
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam nodesep 40
+skinparam ranksep 55
+
+package "Démarrage et Swing" {
+  class Main {
+    {static} +main(args : String[]) : void
+  }
+  class GameLoop {
+    -gameThread : Thread
+    -panel : GamePanel
+    -game : Game
+    -running : boolean
+    +startGameThread() : void
+    +run() : void
+  }
+  class GamePanel {
+    -game : Game
+    +paintComponent(g : Graphics) : void
+  }
 }
 
-class core.RendererManager{
-- ArrayList<Renderer> renderers
-+ ArrayList<Renderer> getRenderers()
-+ void addRenderer(Renderer renderer)
-+ void removeRenderer(Renderer renderer)
-+ void render(Graphics2D g2)
+package "Orchestration" {
+  class Game {
+    -gameStateLock : Object
+    -rendererManager : RendererManager
+    -systemManager : SystemManager
+    -inputState : InputState
+    +update(deltaSeconds : double) : void
+    +render(g2 : Graphics2D) : void
+    +initialize() : void
+  }
+  class SystemManager {
+    -systems : ArrayList<ISystem>
+    +addSystem(system : ISystem) : void
+    +update(deltaSeconds : double) : void
+  }
+  class RendererManager {
+    -renderers : ArrayList<IRenderer>
+    +addRenderer(renderer : IRenderer) : void
+    +render(g2 : Graphics2D) : void
+  }
 }
 
-class core.SystemManager{
-- ArrayList<ISystem> systems
-+ ArrayList<ISystem> getSystems()
-+ void addSystem(ISystem system)
-+ void removeSystem(ISystem system)
-+ void update()
+package "Entrées" {
+  class InputListener {
+    -inputState : InputState
+    +keyTyped(e : KeyEvent) : void
+    +keyPressed(e : KeyEvent) : void
+    +keyReleased(e : KeyEvent) : void
+    +getInputState() : InputState
+  }
+  class InputState <<thread-safe>> {
+    -inputs : boolean[]
+    -lock : Object
+    +getInputs() : boolean[]
+    +getInput(code : int) : boolean
+    +setInput(input : boolean, code : int) : void
+  }
 }
 
-class core.GameConfig  <<constantes>> {
-+ {static} int originalTileSize
-+ {static} int scale
-+ {static} int tileSize
-+ {static} int maxScreenCol
-+ {static} int maxScreenLine
-+ {static} int screenWidth
-+ {static} int screenHeight
-+ {static} int FPS
-+ {static} double drawInterval
-+ {static} int worldColNumber
-+ {static} int worldLineNumber
-+ {static} int ENTITYBASESPEED
+package "Contrats" {
+  interface ISystem {
+    +update(deltaSeconds : double) : void
+  }
+  interface IRenderer {
+    +draw(g : Graphics2D) : void
+  }
 }
 
-class core.GamePanel {
-- Game game
-+ void paintComponent(Graphics)
+package "Systèmes enregistrés par Game" {
+  class PlayerInputSystem
+  class MovementSystem
+  class AnimationSystem
 }
 
-
-class core.Main {
-+ {static} void main(String[])
+class GameConfig <<constantes>> {
+  {static} +FPS : int
+  {static} +UPDATE_INTERVAL_NS : long
+  {static} +FIXED_DELTA_SECONDS : double
+  {static} +ENTITY_BASE_SPEED_PX_PER_SECOND : double
+  {static} +TILESIZE : int
+  {static} +SCREENWIDTH : int
+  {static} +SCREENHEIGHT : int
 }
 
-class core.GameLoop {
-- Thread gameThread
-- GamePanel panel
-- Game game
-+ void startGameThread()
-+ void run()
-}
+Main ..> Game : crée
+Main ..> InputListener : crée
+Main ..> GamePanel : crée
+Main ..> GameLoop : démarre
+GameLoop --> Game : update(dt)
+GameLoop --> GamePanel : repaint()
+GamePanel --> Game : render(g2)
 
-class core.input.InputListener {
-- InputState inputState
-+ void keyTyped(KeyEvent)
-+ void keyPressed(KeyEvent)
-+ void keyReleased(KeyEvent)
-+ InputState getInputState()
-}
+Game o-- SystemManager
+Game o-- RendererManager
+Game --> InputState : transmet aux systèmes
+InputListener --> InputState : met à jour
+SystemManager o-- ISystem : exécute
+RendererManager o-- IRenderer : appelle
 
-class core.input.InputState <<data>> {
-- boolean[] inputs
-+ boolean[] getInputs()
-+ void setInput(boolean,int)
-}
+ISystem <|.. PlayerInputSystem
+ISystem <|.. MovementSystem
+ISystem <|.. AnimationSystem
 
-Game <-- Main : Créer
-GamePanel <-- Main : Créer
-GameLoop <-- Main : Créer et lance
-Game <-- GameLoop : Update
-GamePanel <-- GameLoop : Repaint
-Game <-- GamePanel : Appelle render()
-core.RendererManager <-- Game : créer et appelle render()
-core.SystemManager <-- Game : créer et appelle update()
-core.input.InputListener <-- Main : Initialise
-core.input.InputState <-- core.input.InputListener : Met à jour
-InputState <-- Game : Lit les coordonnées
+GameLoop ..> GameConfig : cadence fixe
+Game ..> GameConfig : configuration
 
-
-
-
+note bottom of SystemManager
+  Ordre d'enregistrement actuel :
+  PlayerInputSystem -> MovementSystem -> AnimationSystem
+end note
 
 @enduml
