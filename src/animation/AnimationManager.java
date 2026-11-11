@@ -1,6 +1,7 @@
 package animation;
 
 import entity.Entity;
+import entity.Enemy;
 import entity.Player;
 
 import java.awt.image.BufferedImage;
@@ -89,7 +90,9 @@ public class AnimationManager {
             playerMap.put(AnimationType.IDLE_DOWN_LEFT, new BufferedImage[]{downleft0});
             playerMap.put(AnimationType.WALK_DOWN_LEFT, new BufferedImage[]{downleft1, downleft2});
 
-            entityAnimationDataMap.put(Player.class,playerMap);
+            entityAnimationDataMap.put(Player.class, playerMap);
+            // Reuse player sprites until enemy-specific animations are available.
+            entityAnimationDataMap.put(Enemy.class, playerMap);
 
         } catch (IOException e) {
             System.out.println(e.getMessage());

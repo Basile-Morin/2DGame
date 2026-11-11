@@ -1,33 +1,34 @@
 package entity;
 
+import animation.AnimationManager;
 import core.GameConfig;
 
 public class EntityFactory {
     private final EntityManager entityManager;
-    public EntityFactory(EntityManager entityManager){
+    private final AnimationManager animationManager;
+
+    public EntityFactory(EntityManager entityManager, AnimationManager animationManager) {
         this.entityManager = entityManager;
+        this.animationManager = animationManager;
     }
 
-    public Player createPlayer(int x, int y){
-        Player p = new Player(entityManager.generateId());
-        p.getPosition().x=x;
-        p.getPosition().y=y;
-        return p;
-    }
-    public Enemy createEnemy(int x, int y){
-        Enemy e = new Enemy(entityManager.generateId());
-        e.getPosition().x=x*GameConfig.TILESIZE;
-        e.getPosition().y=y*GameConfig.TILESIZE;
-        return e;
+    public Player createPlayer(int tileX, int tileY) {
+        Player player = new Player(entityManager.generateId());
+        initialize(player, Player.class, tileX, tileY);
+        return player;
     }
 
+    public Enemy createEnemy(int tileX, int tileY) {
+        Enemy enemy = new Enemy(entityManager.generateId());
+        initialize(enemy, Enemy.class, tileX, tileY);
+        return enemy;
+    }
+
+    private void initialize(Entity entity, Class<? extends Entity> animationType, int tileX, int tileY) {
+        entity.getPosition().setLocation(
+                tileX * GameConfig.TILESIZE,
+                tileY * GameConfig.TILESIZE
+        );
+        entity.setAnimationSet(animationManager.createAnimationSet(animationType));
+    }
 }
-
-/*
--entityManager : EntityManager
-+ EntityFactory(entityManager:EntityManager)
-+ createPlayer(x:int, y:int) : Player
-+ createEnemy(x:int, y:int, enemyId:int ) : Enemy
-+ createNpc(x:int, y:int, npcId:int) : Npc
-+ createWorldObject(x:int, y:int, objectId:int) : WorldObject
- */

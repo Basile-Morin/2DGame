@@ -47,16 +47,14 @@ public class Game {
 
     public void initialize() {
         EntityManager entityManager = new EntityManager();
-        EntityFactory entityFactory= new EntityFactory(entityManager);
         AnimationManager animationManager = new AnimationManager();
+        EntityFactory entityFactory = new EntityFactory(entityManager, animationManager);
 
         //Création du joueur
         Player player = entityFactory.createPlayer(0,0);
-        player.setAnimationSet(animationManager.createAnimationSet(Player.class));
         entityManager.addEntity(player);
 
         Enemy enemy = entityFactory.createEnemy(10,10);
-        enemy.setAnimationSet(animationManager.createAnimationSet(Player.class));
         entityManager.addEntity(enemy);
 
         //Création camera
