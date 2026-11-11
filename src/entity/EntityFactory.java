@@ -1,5 +1,7 @@
 package entity;
 
+import core.GameConfig;
+
 public class EntityFactory {
     private final EntityManager entityManager;
     public EntityFactory(EntityManager entityManager){
@@ -11,6 +13,12 @@ public class EntityFactory {
         p.getPosition().x=x;
         p.getPosition().y=y;
         return p;
+    }
+    public Enemy createEnemy(int x, int y){
+        Enemy e = new Enemy(entityManager.generateId());
+        e.getPosition().x=x*GameConfig.TILESIZE;
+        e.getPosition().y=y*GameConfig.TILESIZE;
+        return e;
     }
 
 }

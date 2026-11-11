@@ -22,7 +22,6 @@ public class Player extends Entity {
         movementState = new MovementState();
         movementState.direction= Direction.DOWN;
         movementState.speed=GameConfig.ENTITY_BASE_SPEED_PX_PER_SECOND;
-        movementState.velocity=new Point(0,0);
 
         collisionData = new CollisionData();
         collisionData.area=new Rectangle(0,0,GameConfig.ENTITYWIDTH,GameConfig.ENTITYHEIGHT);

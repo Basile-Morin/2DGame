@@ -17,11 +17,13 @@ public class GameConfig {
     public static final int WORLDCOLNUMBER =32;
     public static final int WORLDLINENUMBER =24;
     public static final double ENTITY_BASE_SPEED_PX_PER_SECOND = 240.0;
+    public static final double ENEMY_BASE_SPEED_PX_PER_SECOND = 240.0*0.75;
     public static final int ORIGINALENTITYWIDTH=16;
     public static final int ORIGINALENTITYHEIGHT=16;
     public static final int ENTITYWIDTH = ORIGINALENTITYWIDTH * SCALE;
     public static final int ENTITYHEIGHT = ORIGINALENTITYHEIGHT* SCALE;
     public static final int PLAYERBASEDAMAGE=1;
+    public static final int ENEMYBASEDAMAGE=1;
     public static final Rectangle ENTITYBASEHITBOX = new Rectangle(ENTITYWIDTH/4,ENTITYHEIGHT/4,ENTITYWIDTH/2,ENTITYWIDTH/2);
 
 

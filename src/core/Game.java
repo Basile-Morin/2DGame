@@ -5,9 +5,11 @@ import animation.AnimationManager;
 import animation.EntityAnimationRenderer;
 import animation.AnimationSystem;
 import core.input.InputState;
+import entity.Enemy;
 import entity.EntityFactory;
+import movement.MovementSystem;
 import movement.Camera;
-import movement.PlayerMovementSystem;
+import movement.PlayerInputSystem;
 import entity.EntityManager;
 import entity.Player;
 import map.MapLoader;
@@ -52,6 +54,10 @@ public class Game {
         player.setAnimationSet(animationManager.createAnimationSet(Player.class));
         entityManager.addEntity(player);
 
+        Enemy enemy = entityFactory.createEnemy(10,10);
+        enemy.setAnimationSet(animationManager.createAnimationSet(Player.class));
+        entityManager.addEntity(enemy);
+
         //Création camera
         Camera camera = new Camera(player);
 
@@ -60,9 +66,9 @@ public class Game {
         MapRenderer mapRenderer = new MapRenderer(map,camera);
         rendererManager.addRenderer(mapRenderer);
 
-        //Système de mouvement
-        PlayerMovementSystem movementSystem = new PlayerMovementSystem(player,inputState,map);
-        systemManager.addSystem(movementSystem);
+        // L'entrée du joueur définit une intention ; le système commun applique le mouvement.
+        systemManager.addSystem(new PlayerInputSystem(player, inputState));
+        systemManager.addSystem(new MovementSystem(entityManager, map));
 
         //Animation Render
         EntityAnimationRenderer animationRenderer = new EntityAnimationRenderer(entityManager,camera);

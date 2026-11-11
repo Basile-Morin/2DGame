@@ -1,6 +1,7 @@
 package entity;
 
 import animation.AnimationSet;
+import core.GameConfig;
 import entity.data.*;
 
 import java.awt.*;
@@ -45,6 +46,11 @@ public abstract class Entity {
     public void nextFrame(double deltaSeconds){
         if (animationSet==null) return;
         animationSet.update(deltaSeconds);
+    }
+
+    /** Keeps the original no-argument entry point for callers that advance one fixed tick. */
+    public void nextFrame(){
+        nextFrame(GameConfig.FIXED_DELTA_SECONDS);
     }
 
     public AnimationSet getAnimationSet(){
